@@ -1,52 +1,75 @@
-import pandas as pd
+import numpy as np
 import streamlit as st
+import pandas as pd
+#from PIL import Image
+import tensorflow as tf
+from sklearn.preprocessing import StandardScaler
 
-# Load your trained model (replace with your model loading logic)
-def load_model():
-    # Replace this with your model loading code (e.g., pickle, joblib)
-    # Example: with open("model.pkl", "rb") as f:
-    #              model = pickle.load(f)
-    #              return model
-    pass  # Placeholder
+# Load the saved model
+model = tf.keras.models.load_model('NN_Model.h5')  # Replace 'your_model.h5' with your model file
 
-model = load_model()
+# Define the features for the prediction
+features = [
+    'radius_mean',
+    'texture_mean',
+    'perimeter_mean',
+    'area_mean ',
+    'smoothness_mean', 'compactness_mean',
+    'concavity_mean',
+    'concave points_mean',
+    'symmetry_mean',
+    'fractal_dimension_mean',
+    'radius_se ',
+    'texture_se',
+    'perimeter_se',
+    'area_se',
+    'smoothness_se',
+    'compactness_se',
+    'concavity_se',
+    'concave points_se',
+    'symmetry_se',
+    'fractal_dimension_se',
+    'radius_worst',
+    'texture_worst ',
+    'perimeter_worst',
+    'area_worst ',
+    'smoothness_worst',
+    'compactness_worst',
+    'concavity_worst ',
+    'concave points_worst',
+    'symmetry_worst',
+    'fractal_dimension_worst'
+]
 
-# Function to preprocess data (replace with your preprocessing logic)
-def preprocess_data(data):
-    # Replace this with your data preprocessing steps (e.g., scaling, encoding)
-    # Example:
-    # scaler = StandardScaler()
-    # data = scaler.fit_transform(data)
-    # return data
-    return data
+# Load the image
+#image = Image.open('breast_cancer_image.jpg')  # Replace 'breast_cancer_image.jpg' with your image file
 
-# Function to make predictions
-def make_predictions(data):
-    # Preprocess data before prediction
-    preprocessed_data = preprocess_data(data)
-    # Make predictions using your model
-    predictions = model.predict(preprocessed_data)
-    return predictions
+# Create the Streamlit page
+st.title("Breast Cancer Detection")
+#st.image(image, caption='Image for visualization', use_column_width=True)
+st.header("Enter Cell Details")
 
-# Title and header
-st.title("Breast Cancer Prediction App")
-st.header("Upload a CSV file containing patient data")
+# Create input fields for each feature
+user_input = {}
+for feature in features:
+    user_input[feature] = st.number_input(feature,)
 
-# File upload widget
-uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
+# Create a button to predict the cancer risk
+if st.button("Predict Cancer"):
+    # Create a pandas DataFrame from the user input
+    df = pd.DataFrame([user_input])
+    input_data_as_numpy_array = np.asarray(df)
 
-# Button to trigger prediction
-if st.button("Predict"):
-    if uploaded_file is not None:
-        # Read data from uploaded CSV file
-        data = pd.read_csv(uploaded_file)
+    # reshape the numpy array as we are predicting for one data point
+    input_data_reshaped = input_data_as_numpy_array.reshape(1, -1)
+    # Preprocess the data
+    scaler = StandardScaler()
 
-        # Make predictions
-        predictions = make_predictions(data.copy())
+    scaled_data = scaler.fit_transform(input_data_reshaped)
+    # Predict the cancer risk using the loaded model
+    prediction = model.predict(scaled_data)[0][0]
 
-        # Display predictions
-        st.subheader("Predictions")
-        st.dataframe(data.assign(Prediction=predictions))
-    else:
-        st.warning("Please upload a CSV file.")
+    # Display the prediction
+    st.write(f"**Predicted Cancer Risk:** {prediction}")
 
+    # You can add more information or logic based on the prediction here
