@@ -1,4 +1,4 @@
-🩺 Breast Cancer Classification
+# 🩺 Breast Cancer Classification
 
 A Machine Learning + Deep Learning powered web application for breast cancer detection based on medical data. This project uses trained models to classify whether a tumor is Malignant (cancerous) or Benign (non-cancerous).
 
