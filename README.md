@@ -16,17 +16,6 @@ The app is deployed using Streamlit for an easy-to-use interface, where users ca
 
 ✅ Trained on a Breast Cancer Dataset (data.csv).
 
-📂 Repository Structure
-.
-├── .streamlit/                 # Streamlit configuration files
-├── Breast_Cancer_Detection.ipynb  # Model training and analysis notebook
-├── L_Model.h5                   # Trained Deep Learning Model (Large)
-├── NN_Model.h5                  # Trained Neural Network Model
-├── app.py                       # Main Streamlit app
-├── breast_cancer_detection.py   # Model loading and prediction logic
-├── data.csv                     # Dataset for training
-├── requirements.txt             # Python dependencies
-├── runtime.txt                  # Runtime configuration
 
 📊 Dataset
 
